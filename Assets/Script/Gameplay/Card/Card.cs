@@ -7,6 +7,7 @@ public class Card : MonoBehaviour
     public float rotateTime = 0.5f;
 
     public SpriteRenderer spriteRenderer;
+    public AudioSource flipSfx;
 
     public Action<Card> onFlip = delegate { };
 
@@ -84,6 +85,8 @@ public class Card : MonoBehaviour
     {
         if (isRotating)
             yield return new WaitUntil(() => isRotating == false);
+
+        flipSfx.Play();
 
         if (isFlipped)
         {

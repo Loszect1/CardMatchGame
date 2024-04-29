@@ -9,6 +9,10 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private CardManager cardManager;
 
+    public AudioSource matchSfx;
+    public AudioSource misMatchSfx;
+    public AudioSource gameOverSfx;
+
     private Card flippedCard;
     private bool isStarted = false;
 
@@ -61,6 +65,7 @@ public class GameController : MonoBehaviour
 
     public void Endgame()
     {
+        gameOverSfx.Play();
         SaveSystem.SaveCardsData(new(), 0, 0);
         isStarted = false;
         ViewManager.Ins.Show("Menu");
@@ -94,8 +99,8 @@ public class GameController : MonoBehaviour
             {
                 if (card.CardId == flippedCard.CardId)
                 {
+                    matchSfx.Play();
                     MatchCard(flippedCard, card);
-                    
                 }
                 else
                 {
@@ -130,6 +135,7 @@ public class GameController : MonoBehaviour
     IEnumerator FlipBackTwoCards(Card card1, Card card2)
     {
         yield return new WaitUntil(() => !card1.IsRotating && !card2.IsRotating);
+        misMatchSfx.Play();
         card1.FlipBack();
         card2.FlipBack();
     }
